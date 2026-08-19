@@ -1,0 +1,50 @@
+name: Desktop release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'desktop-v*'
+
+permissions:
+  contents: write
+
+jobs:
+  windows-installer:
+    runs-on: windows-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      DSH_UPDATE_OWNER: ${{ github.repository_owner }}
+      DSH_UPDATE_REPO: ${{ github.event.repository.name }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Enable pnpm
+        shell: pwsh
+        run: corepack enable
+
+      - name: Install dependencies
+        shell: pwsh
+        run: pnpm install --frozen-lockfile
+
+      - name: Build host libraries
+        shell: pwsh
+        run: pnpm run build:lib
+
+      - name: Build web frontend
+        shell: pwsh
+        run: pnpm --filter @deepseek-ai/dsh-web-frontend run build
+
+      - name: Prepare embedded runtime
+        shell: pwsh
+        run: pnpm run desktop:prepare
+
+      - name: Build and publish Windows installers
+        shell: pwsh
+        run: pnpm --filter @deepseek-ai/dsh-desktop run build -- --publish always --x64 --arm64

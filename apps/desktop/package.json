@@ -1,0 +1,20 @@
+{
+  "name": "@deepseek-ai/dsh-desktop",
+  "private": true,
+  "version": "0.1.0",
+  "description": "DeepSeek Harness desktop shell",
+  "type": "module",
+  "main": "main.mjs",
+  "scripts": {
+    "prepare-runtime": "node scripts/prepare-runtime.mjs",
+    "dev": "electron main.mjs",
+    "build": "electron-builder --config electron-builder.cjs --win nsis"
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2"
+  },
+  "devDependencies": {
+    "electron": "^38.1.0",
+    "electron-builder": "^26.0.12"
+  }
+}
