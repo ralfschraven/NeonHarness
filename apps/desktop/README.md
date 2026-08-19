@@ -33,6 +33,23 @@ update is ready.
 Before each release, increment the version in this package's
 `package.json`, commit it, and push a tag such as `desktop-v0.1.1`.
 
+The GitHub Actions release job uses the repository secrets
+`WIN_CSC_LINK` (a base64-encoded password-protected `.pfx`) and
+`WIN_CSC_KEY_PASSWORD` to sign Windows builds. Keep both values in GitHub
+Secrets; never commit the certificate or password.
+
+After the first manually installed GitHub release, future builds check the
+GitHub release feed automatically. To publish the next version:
+
+```powershell
+# Update apps/desktop/package.json first, then:
+git add apps/desktop/package.json
+git commit -m "Prepare desktop release 0.1.2"
+git tag desktop-v0.1.2
+git push origin main
+git push origin desktop-v0.1.2
+```
+
 ## Local self-signing
 
 For a local Windows build, electron-builder can use a code-signing certificate
