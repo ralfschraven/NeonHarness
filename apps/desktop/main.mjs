@@ -111,7 +111,26 @@ async function setupAutoUpdater() {
   const updateConfig = join(process.resourcesPath, 'app-update.yml')
   const updateUrl = process.env.DSH_UPDATE_URL
   if (!existsSync(updateConfig) && updateUrl === undefined) return
-  const { autoUpdater } = await import('electron-updater')
+  let updaterModule
+  try {
+    updaterModule = await import('electron-updater')
+  } catch (error) {
+    console.warn(`[dsh-desktop] auto-updater unavailable: ${error instanceof Error ? error.message : String(error)}`)
+    return
+  }
+  // electron-updater is CommonJS. Depending on Electron/Node's interop mode,
+  // its getter may be exposed as a named export or through the default export.
+  let autoUpdater
+  try {
+    autoUpdater = updaterModule.autoUpdater ?? updaterModule.default?.autoUpdater
+  } catch (error) {
+    console.warn(`[dsh-desktop] auto-updater could not initialize: ${error instanceof Error ? error.message : String(error)}`)
+    return
+  }
+  if (autoUpdater === undefined) {
+    console.warn('[dsh-desktop] auto-updater did not expose an updater instance')
+    return
+  }
   autoUpdater.autoDownload = true
   autoUpdater.autoInstallOnAppQuit = true
   if (updateUrl !== undefined && updateUrl !== '') {
