@@ -16,6 +16,8 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       DSH_UPDATE_OWNER: ${{ github.repository_owner }}
       DSH_UPDATE_REPO: ${{ github.event.repository.name }}
+      WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+      WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -40,6 +42,10 @@ jobs:
       - name: Build web frontend
         shell: pwsh
         run: pnpm --filter @deepseek-ai/dsh-web-frontend run build
+
+      - name: Install desktop profile plugins
+        shell: pwsh
+        run: pnpm run dsh -- plugin --profile web add dsh-codex-connect@0.1.0-alpha.4.10 dsh-plugin-genui@0.12.2 dsh-usage@0.1.1
 
       - name: Prepare embedded runtime
         shell: pwsh

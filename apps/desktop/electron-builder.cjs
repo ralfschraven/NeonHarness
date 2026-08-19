@@ -3,6 +3,9 @@ const path = require('node:path')
 const updateOwner = process.env.DSH_UPDATE_OWNER
 const updateRepo = process.env.DSH_UPDATE_REPO
 const signingThumbprint = process.env.DSH_SIGNING_THUMBPRINT
+const signingConfigured = Boolean(
+  signingThumbprint || process.env.WIN_CSC_LINK || process.env.CSC_LINK,
+)
 
 /**
  * Windows installer configuration. A GitHub publisher is emitted only when
@@ -35,6 +38,7 @@ module.exports = {
     },
   ],
   asar: true,
+  forceCodeSigning: signingConfigured,
   win: {
     compression: 'store',
     target: [{ target: 'nsis', arch: ['x64', 'arm64'] }],
