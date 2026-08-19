@@ -9,7 +9,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/saira-semi-condensed-400.ttf') format('truetype');
+  src: url('/fonts/saira-400.ttf') format('truetype');
 }
 
 @font-face {
@@ -17,7 +17,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('/fonts/saira-semi-condensed-500.ttf') format('truetype');
+  src: url('/fonts/saira-500.ttf') format('truetype');
 }
 
 @font-face {
@@ -25,7 +25,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('/fonts/saira-semi-condensed-600.ttf') format('truetype');
+  src: url('/fonts/saira-600.ttf') format('truetype');
 }
 
 @font-face {
@@ -33,7 +33,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/saira-semi-condensed-700.ttf') format('truetype');
+  src: url('/fonts/saira-700.ttf') format('truetype');
 }
 
 @font-face {
@@ -78,7 +78,7 @@ body[data-ds-dark-theme] {
   --neon-line-strong: rgba(230, 233, 238, 0.18);
   --neon-glow: rgba(198, 255, 0, 0.2);
 
-  --dsw-font-family: 'Neon Display', 'Saira Semi Condensed', 'Arial Narrow', 'Segoe UI', sans-serif;
+  --dsw-font-family: 'Neon Display', 'Saira', 'Saira Semi Condensed', 'Arial Narrow', 'Segoe UI', sans-serif;
   --ds-font-family-code: 'Neon Mono', 'JetBrains Mono', 'Cascadia Mono', Consolas, monospace;
 
   /* Shared surfaces. */

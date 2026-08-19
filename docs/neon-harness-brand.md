@@ -30,7 +30,7 @@ or confirmation; keep most surfaces near black or steel.
 
 ## Typography
 
-- **Neon Display** — bundled Saira Semi Condensed weights, used for the
+- **Neon Display** — bundled Saira weights, used for the
   NeonHarness wordmark, hero headlines, and high-signal titles.
 - **Neon Mono** — bundled JetBrains Mono weights, used for code, command
   output, technical labels, pipeline states, and compact navigation metadata.

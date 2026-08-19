@@ -6,7 +6,7 @@ Reference: the selected NeonHarness brand direction supplied in the design brief
 
 - Collapsed rail: NeonHarness N mark, lime active control, steel navigation icons.
 - Expanded sidebar: NeonHarness wordmark, uppercase New Session control, workspace/session list, and settings footer.
-- Empty hero: N mark, `Build. Test. Deploy.`, `NEON CORE`, workspace chip, and workbench composer.
+- Empty hero: N mark, `Build. Test. Deploy. Reliably.`, `NEON CORE`, workspace chip, and workbench composer.
 - Typography and tokens: bundled Neon Display/Saira Semi Condensed and Neon Mono/JetBrains Mono assets load from the app, with the selected near-black/steel/slate/white/lime/amber palette.
 
 ## Evidence
