@@ -124,7 +124,7 @@ async function setupAutoUpdater() {
       buttons: ['Restart now', 'Later'],
       defaultId: 0,
       cancelId: 1,
-      title: 'DeepSeek Harness update ready',
+      title: 'NeonHarness update ready',
       message: 'A new version has been downloaded.',
       detail: 'Restart the app to install it.',
     })
@@ -169,7 +169,7 @@ if (!hasLock) {
       console.error('[dsh-desktop] startup failed', error instanceof Error ? error.stack : JSON.stringify(error))
       await dialog.showMessageBox({
         type: 'error',
-        title: 'DeepSeek Harness could not start',
+        title: 'NeonHarness could not start',
         message: error instanceof Error ? error.message : String(error),
       })
       app.quit()

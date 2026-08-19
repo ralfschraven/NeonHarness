@@ -15,8 +15,8 @@ const signingConfigured = Boolean(
  */
 module.exports = {
   appId: 'ai.deepseek.harness',
-  productName: 'DeepSeek Harness',
-  artifactName: 'DeepSeek-Harness-Setup-${version}.${ext}',
+  productName: 'NeonHarness',
+  artifactName: 'NeonHarness-Setup-${version}.${ext}',
   directories: {
     output: path.resolve(__dirname, '../../release/desktop'),
   },
@@ -54,7 +54,7 @@ module.exports = {
     allowToChangeInstallationDirectory: true,
     createDesktopShortcut: true,
     createStartMenuShortcut: true,
-    shortcutName: 'DeepSeek Harness',
+    shortcutName: 'NeonHarness',
   },
   publish: updateOwner && updateRepo
     ? [{ provider: 'github', owner: updateOwner, repo: updateRepo }]

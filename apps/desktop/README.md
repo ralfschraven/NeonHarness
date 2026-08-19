@@ -1,4 +1,4 @@
-# DeepSeek Harness desktop app
+# NeonHarness desktop app
 
 This package wraps the existing `dsh --profile web` server in Electron. The
 server is copied into `.desktop-runtime` before packaging, so the installed

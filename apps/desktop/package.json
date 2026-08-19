@@ -1,8 +1,8 @@
 {
   "name": "@deepseek-ai/dsh-desktop",
   "private": true,
-  "version": "0.1.1",
-  "description": "DeepSeek Harness desktop shell",
+  "version": "0.1.2",
+  "description": "NeonHarness desktop shell",
   "type": "module",
   "main": "main.mjs",
   "scripts": {
