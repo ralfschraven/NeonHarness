@@ -179,6 +179,19 @@ body,
   background: var(--neon-near-black);
 }
 
+/* The workbench surface belongs to the application frame, not the composer
+ * stack. Keeping it on the shell makes the brand background run edge-to-edge,
+ * including behind the collapsed rail, while the composer remains a distinct
+ * input card inside it. */
+[class*='frame'],
+[class*='sidebarCol'] {
+  background: #10151a !important;
+}
+
+[class*='root'][data-phase] {
+  background: transparent !important;
+}
+
 body {
   letter-spacing: 0.005em;
 }
@@ -257,9 +270,10 @@ textarea:focus-visible,
   color: var(--neon-lime) !important;
 }
 
-/* Keep the composer substantial but make it read like a workbench surface. */
-[class*='composer'],
-[class*='inputBar'] {
+/* Keep the input substantial but make only the actual card read like a
+ * workbench surface. The surrounding composer stack stays transparent so it
+ * cannot create a card-sized background block. */
+[class*='composerStack'] [class*='card'] {
   border-color: rgba(230, 233, 238, 0.16) !important;
   background: #10151a !important;
   box-shadow: 0 0 0 1px rgba(198, 255, 0, 0.03), 0 16px 50px rgba(0, 0, 0, 0.28);

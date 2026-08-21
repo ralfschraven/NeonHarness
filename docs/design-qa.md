@@ -19,4 +19,6 @@ Reference: the selected NeonHarness brand direction supplied in the design brief
 
 The standalone preview emitted transient connection-retry messages during backend startup; the final rendered dashboard stayed available and visually stable after the backend settled.
 
+Browser layout check: the workbench surface now spans the full 1280px viewport (frame x=0, width=1280); the composer wrapper is transparent and the input card remains isolated at 780px wide.
+
 Final result: passed
