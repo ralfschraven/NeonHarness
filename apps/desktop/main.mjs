@@ -163,7 +163,7 @@ async function createMainWindow() {
     minWidth: 980,
     minHeight: 680,
     backgroundColor: '#141416',
-    icon: join(appAssetsRoot(), 'assets', 'deepseek-harness-icon.ico'),
+    icon: join(appAssetsRoot(), 'assets', 'neon-harness-icon.ico'),
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,

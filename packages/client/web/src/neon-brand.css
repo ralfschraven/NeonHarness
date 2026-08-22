@@ -1,0 +1,291 @@
+/* NeonHarness brand layer.
+ *
+ * The upstream shell remains responsible for layout and component behavior;
+ * this sheet owns the product-facing palette, typography, focus treatment,
+ * and shared surface language so every composed plugin reads as one product.
+ */
+@font-face {
+  font-family: 'Neon Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/saira-400.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Neon Display';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/saira-500.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Neon Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/saira-600.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Neon Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/saira-700.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Neon Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-400.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Neon Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-500.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Neon Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-600.ttf') format('truetype');
+}
+
+body,
+body[data-ds-dark-theme] {
+  color-scheme: dark;
+
+  /* Brand primitives from the selected NeonHarness direction. */
+  --neon-near-black: #0b0e11;
+  --neon-steel: #171c22;
+  --neon-slate: #2a313b;
+  --neon-cool-gray: #8b949e;
+  --neon-white: #e6e9ee;
+  --neon-lime: #c6ff00;
+  --neon-lime-soft: #d8ff58;
+  --neon-amber: #ffb020;
+  --neon-red: #ff6464;
+  --neon-line: rgba(230, 233, 238, 0.1);
+  --neon-line-strong: rgba(230, 233, 238, 0.18);
+  --neon-glow: rgba(198, 255, 0, 0.2);
+
+  --dsw-font-family: 'Neon Display', 'Saira', 'Saira Semi Condensed', 'Arial Narrow', 'Segoe UI', sans-serif;
+  --ds-font-family-code: 'Neon Mono', 'JetBrains Mono', 'Cascadia Mono', Consolas, monospace;
+
+  /* Shared surfaces. */
+  --dsw-alias-bg-base: var(--neon-near-black);
+  --dsw-alias-bg-layer-1: #0f1317;
+  --dsw-alias-bg-layer-2: #14191e;
+  --dsw-alias-bg-layer-3: #1a2128;
+  --dsw-alias-bg-overlay: var(--neon-slate);
+  --dsw-alias-bg-module-platform: #11161b;
+  --dsw-alias-bg-multi-select: #151b20;
+  --dsw-alias-bg-skeleton: rgba(230, 233, 238, 0.06);
+
+  /* Borders and ink. */
+  --dsw-alias-border-l1: var(--neon-line);
+  --dsw-alias-border-l2: rgba(230, 233, 238, 0.14);
+  --dsw-alias-border-l3: var(--neon-line-strong);
+  --dsw-alias-border-l4: rgba(230, 233, 238, 0.26);
+  --dsw-alias-border-l2-darkmode-thin: rgba(230, 233, 238, 0.08);
+  --dsw-alias-label-primary: var(--neon-white);
+  --dsw-alias-label-primary-bluish: var(--neon-white);
+  --dsw-alias-label-primary-foreground: var(--neon-near-black);
+  --dsw-alias-label-primary-inverted: var(--neon-near-black);
+  --dsw-alias-label-secondary: #b5bec8;
+  --dsw-alias-label-tertiary: var(--neon-cool-gray);
+  --dsw-alias-label-caption: #68737f;
+  --dsw-alias-label-dimmed: #4b5661;
+
+  /* NeonHarness interaction and state colors. */
+  --dsw-alias-brand-primary: var(--neon-lime);
+  --dsw-alias-brand-primary-invert: var(--neon-near-black);
+  --dsw-alias-brand-text: var(--neon-white);
+  --dsw-alias-button-primary-fill: var(--neon-lime);
+  --dsw-alias-button-primary-dimmed: #4d5f16;
+  --dsw-alias-button-primary-hover: var(--neon-lime-soft);
+  --dsw-alias-button-info-fill: var(--neon-lime);
+  --dsw-alias-button-info-hover: var(--neon-lime-soft);
+  --dsw-alias-button-contrast-fill: var(--neon-white);
+  --dsw-alias-button-elevated-fill: #11171c;
+  --dsw-alias-button-floating-fill: #151b20;
+  --dsw-alias-button-floating-hover: #202830;
+  --dsw-alias-button-ghost-active-border: var(--neon-lime);
+  --dsw-alias-button-ghost-active-fill: rgba(198, 255, 0, 0.1);
+  --dsw-alias-button-ghost-active-hover: rgba(198, 255, 0, 0.16);
+  --dsw-alias-interactive-bg-active: rgba(198, 255, 0, 0.16);
+  --dsw-alias-interactive-bg-hover: rgba(230, 233, 238, 0.08);
+  --dsw-alias-interactive-bg-hover-accent: rgba(198, 255, 0, 0.16);
+  --dsw-alias-interactive-bg-hover-solid: var(--neon-steel);
+  --dsw-alias-state-business-primary: var(--neon-lime);
+  --dsw-alias-state-business-tertiary: rgba(198, 255, 0, 0.12);
+  --dsw-alias-state-success-primary: var(--neon-lime);
+  --dsw-alias-state-success-secondary: var(--neon-lime-soft);
+  --dsw-alias-state-success-tertiary: rgba(198, 255, 0, 0.12);
+  --dsw-alias-state-warn-label: var(--neon-amber);
+  --dsw-alias-state-warn-primary: var(--neon-amber);
+  --dsw-alias-state-warn-secondary: #ffd166;
+  --dsw-alias-state-warn-tertiary: rgba(255, 176, 32, 0.14);
+  --dsw-alias-state-error-primary: var(--neon-red);
+  --dsw-alias-state-error-secondary: #ff9696;
+  --dsw-alias-toast-bg: #202830;
+  --dsw-alias-tooltip-bg: #202830;
+
+  /* Conversation, sidebar, and picker-specific surfaces. */
+  --dsw-specific-sidebar-fill: var(--neon-near-black);
+  --dsw-specific-sidebar-nav-item-active: var(--neon-steel);
+  --dsw-specific-sidebar-nav-item-active-accent: rgba(198, 255, 0, 0.13);
+  --dsw-specific-sidebar-nav-item-hover: #11171c;
+  --dsw-specific-selector: #171e25;
+  --dsw-specific-menu: #141a20;
+  --dsw-specific-input-major: #11171c;
+  --dsw-specific-login-input: #0f1418;
+  --dsw-specific-bubble: #151b20;
+  --dsw-specific-bubble-highlight: rgba(198, 255, 0, 0.16);
+  --dsw-specific-tip: #151b20;
+  --dsw-alias-markdown-code-block: #0b0e11;
+  --dsw-alias-markdown-code-block-banner: #11171c;
+  --dsw-alias-markdown-inline-code: #1b232a;
+  --dsw-alias-markdown-tag: #202830;
+  --dsw-alias-markdown-citation: #2a313b;
+
+  /* Static values consumed directly by older primitives. */
+  --dsw-static-deepseek-50: rgba(198, 255, 0, 0.08);
+  --dsw-static-deepseek-100: rgba(198, 255, 0, 0.12);
+  --dsw-static-deepseek-200: rgba(198, 255, 0, 0.18);
+  --dsw-static-deepseek-400: var(--neon-lime-soft);
+  --dsw-static-deepseek-450: var(--neon-lime);
+  --dsw-static-deepseek-500: var(--neon-lime);
+  --dsw-static-deepseek-600: #87ad00;
+  --dsw-static-deepseek-800: #38470e;
+  --dsw-static-deepseek-900: #1d2608;
+  --dsw-static-blue-400: var(--neon-lime-soft);
+  --dsw-static-blue-450: var(--neon-lime);
+  --dsw-static-blue-500: var(--neon-lime);
+}
+
+html,
+body,
+#root {
+  background: var(--neon-near-black);
+}
+
+/* The workbench surface belongs to the application frame, not the composer
+ * stack. Keeping it on the shell makes the brand background run edge-to-edge,
+ * including behind the collapsed rail, while the composer remains a distinct
+ * input card inside it. */
+[class*='frame'],
+[class*='sidebarCol'] {
+  background: #10151a !important;
+}
+
+[class*='root'][data-phase] {
+  background: transparent !important;
+}
+
+body {
+  letter-spacing: 0.005em;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--dsw-font-family);
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role='button']:focus-visible {
+  outline: 2px solid var(--neon-lime);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(198, 255, 0, 0.12);
+}
+
+::selection {
+  color: var(--neon-near-black);
+  background: var(--neon-lime);
+}
+
+/* The selected brand direction uses compact, instrument-like controls. */
+[class*='logoRow'] {
+  border-bottom: 1px solid rgba(230, 233, 238, 0.06);
+}
+
+[class*='newSession'] {
+  border-color: rgba(198, 255, 0, 0.24) !important;
+  border-radius: 6px !important;
+  box-shadow: inset 3px 0 0 var(--neon-lime);
+  font-family: var(--ds-font-family-code);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 11px !important;
+}
+
+[class*='newSession']:hover {
+  border-color: rgba(198, 255, 0, 0.55) !important;
+  box-shadow: inset 3px 0 0 var(--neon-lime), 0 0 18px rgba(198, 255, 0, 0.08);
+}
+
+[class*='headlineText'] {
+  font-family: 'Neon Display', var(--dsw-font-family);
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+[class*='previewBadge'] {
+  border-color: rgba(198, 255, 0, 0.32) !important;
+  border-radius: 4px !important;
+  background: rgba(198, 255, 0, 0.1) !important;
+  color: var(--neon-lime) !important;
+  font-family: var(--ds-font-family-code) !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+[class*='workspaceLabel'],
+[class*='newSessionLabel'] {
+  letter-spacing: 0.02em;
+}
+
+[class*='workspace'] {
+  border-radius: 6px !important;
+}
+
+[class*='workspace']:hover,
+[class*='workspace'][aria-expanded='true'] {
+  background: rgba(198, 255, 0, 0.08) !important;
+  color: var(--neon-lime) !important;
+}
+
+/* Keep the input substantial but make only the actual card read like a
+ * workbench surface. The surrounding composer stack stays transparent so it
+ * cannot create a card-sized background block. */
+[class*='composerStack'] [class*='card'] {
+  border-color: rgba(230, 233, 238, 0.16) !important;
+  background: #10151a !important;
+  box-shadow: 0 0 0 1px rgba(198, 255, 0, 0.03), 0 16px 50px rgba(0, 0, 0, 0.28);
+}
+
+/* Status indicators are part of the product signature: lime is live/done,
+ * amber is attention, and the rest of the UI stays deliberately quiet. */
+[data-state='ongoing'],
+[data-state='done'] {
+  color: var(--neon-lime) !important;
+}
+
+[data-state='warning'] {
+  color: var(--neon-amber) !important;
+}
