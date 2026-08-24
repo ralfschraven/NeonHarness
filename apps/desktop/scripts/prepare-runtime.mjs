@@ -122,6 +122,31 @@ async function copyExternal(source, destination) {
   })
 }
 
+/**
+ * Keep known profile-plugin compatibility fixes in the packaged runtime.
+ *
+ * dsh-plugin-focus 1.0.1 marks its explicit output object with
+ * `required: true`. In the value-schema DSL requiredness belongs to object
+ * properties, so that root marker prevents the profile from booting. The
+ * marker has no meaning at the root and can safely be omitted. This guard is
+ * intentionally scoped to the third-party package and becomes a no-op when
+ * a future plugin release ships the corrected schema.
+ */
+async function applyExternalCompatibility(name, destination) {
+  if (name !== 'dsh-plugin-focus') return
+  const entry = join(destination, 'lib', 'index.js')
+  let source
+  try {
+    source = await readFile(entry, 'utf8')
+  } catch {
+    return
+  }
+  const legacy = '        type: "object",\n        additionalProperties: false,\n        required: true,\n        properties:'
+  if (!source.includes(legacy)) return
+  await writeFile(entry, source.replace(legacy, legacy.replace('        required: true,\n', '')))
+  console.log('Applied dsh-plugin-focus schema compatibility fix')
+}
+
 const workspace = new Map()
 for (const directory of await packageDirectories()) {
   const manifest = await readManifest(directory)
@@ -164,7 +189,10 @@ for (const [name, record] of selected) {
   if (name === '@deepseek-ai/dsh') continue
   const destination = join(runtimeRoot, 'node_modules', ...name.split('/'))
   if (workspace.has(name)) await copySelected(record.directory, destination)
-  else await copyExternal(record.directory, destination)
+  else {
+    await copyExternal(record.directory, destination)
+    await applyExternalCompatibility(name, destination)
+  }
 }
 
 await writeFile(join(runtimeRoot, 'runtime-manifest.json'), JSON.stringify({
