@@ -25,4 +25,6 @@ Browser typing check: native textarea text and caret stayed aligned through wrap
 
 Browser tab check: opening existing conversations selected Chat by default; Activity remained available as a manual tab switch.
 
+Tasks screen check: the live preview exposed Chat, Tasks, and Activity tabs; Tasks rendered the active-phase summary, progress bar, ETA label, queue panel, and computer activity feed without removing the detailed Activity view.
+
 Final result: passed

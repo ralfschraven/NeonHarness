@@ -18,6 +18,7 @@ import { registerTrajectoryRequestHeaderDefinition } from './trajectory-request-
 import { registerTrajectoryConversationView } from './trajectory-snapshot-builder.ts'
 import { registerTrajectoryToolDefinition } from './trajectory-tool-definition.ts'
 import { TrajectoryView, type TrajectoryViewInjected } from './TrajectoryView.tsx'
+import { TasksView } from './TasksView.tsx'
 
 /** Required services: the conversation slot, registries, ordinary Session paging, and the locale service. */
 export const inject = ['slots', 'conversationEvents', 'conversationViews', 'sessions', 'locale']
@@ -40,6 +41,15 @@ export function apply(ctx: Context): void {
   registerTrajectoryToolDefinition(ctx)
   registerTrajectoryCompactionDefinitions(ctx)
   registerTrajectoryConversationView(ctx)
+  // Tasks is a compact operational overview over the same session snapshot;
+  // it sits between the durable Chat surface and the detailed Activity ledger.
+  ctx.slots.inject('conversation.view', () => ctx.slots.register({
+    name: 'conversation.view',
+    id: 'tasks',
+    order: 5,
+    locale: NS,
+    label: 'Tasks',
+  }, TasksView))
   ctx.slots.inject('conversation.view', () => ctx.slots.register({
     name: 'conversation.view',
     id: 'trajectory',
