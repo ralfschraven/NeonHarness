@@ -21,4 +21,6 @@ The standalone preview emitted transient connection-retry messages during backen
 
 Browser layout check: the workbench surface now spans the full 1280px viewport (frame x=0, width=1280); the composer wrapper is transparent and the input card remains isolated at 780px wide.
 
+Browser typing check: native textarea text and caret stayed aligned through wrapped and capped drafts; the corrected layer keeps the mirror for highlights, chips, and hints only.
+
 Final result: passed

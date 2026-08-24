@@ -577,10 +577,9 @@ export function InputBar({
     ? null
     : <PermissionSelect key={sessionId} value={permissions} locked={locked} command={command} t={t} />
 
-  // Mirror-layer decorations: a visible backdrop with transparent text. The
-  // claim token highlights through behind the textarea glyphs; each U+FFFC
-  // placeholder renders as a chip (the textarea's own glyph is invisible, the
-  // backdrop chip supplies the visual); the claim hint is ghost text.
+  // Mirror-layer decorations: the native textarea paints ordinary draft text
+  // and the live caret immediately. The backdrop keeps its plain glyphs
+  // transparent and supplies only claim highlights, U+FFFC chips, and hints.
   const deco = input === undefined ? INERT_DECORATIONS : deriveDecorations(input, lexicon)
   const backdrop: ReactNode[] = []
   {
