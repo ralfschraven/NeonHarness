@@ -40,6 +40,7 @@ import { TrajectoryTimeline } from '../src/client/TrajectoryTimeline.tsx'
 import {
   TrajectoryView, type TrajectoryViewInjected,
 } from '../src/client/TrajectoryView.tsx'
+import { deriveTaskSummary } from '../src/client/TasksView.tsx'
 import { createTrajectoryDurationStore } from '../src/client/duration-store.ts'
 import type { TrajectorySnapshot } from '../src/client/trajectory-contract.ts'
 import { deriveTrajectoryTimeline } from '../src/client/timeline.ts'
@@ -299,10 +300,11 @@ function mount(slots: SlotRegistry, nodes: ConversationSnapshot['nodes'] = NODES
 }
 
 describe('plugin registration', () => {
-  it('registers trajectory after chat on the ring', async () => {
+  it('registers Tasks and Activity after Chat on the ring', async () => {
     const b = await bench()
     expect(tabsOf(b.slots)).toEqual([
       { id: 'chat', label: 'Chat' },
+      { id: 'tasks', label: 'Tasks' },
       { id: 'trajectory', label: 'Activity' },
     ])
   })
@@ -358,11 +360,21 @@ describe('plugin registration', () => {
 })
 
 describe('tab switching in ConversationRoot', () => {
-  it('renders two tabs, defaults to Activity, and switches to Chat', async () => {
+  it('renders three tabs, defaults to Chat, and switches through Tasks to Activity', async () => {
     const b = await bench()
     const view = mount(b.slots)
-    expect(screen.queryByTestId('chat-body')).toBeNull()
-    expect(screen.getAllByRole('tab').map(t => t.textContent)).toEqual(['Chat', 'Activity'])
+    expect(screen.queryByTestId('chat-body')).toBeTruthy()
+    expect(screen.getAllByRole('tab').map(t => t.textContent)).toEqual(['Chat', 'Tasks', 'Activity'])
+
+    expect(screen.getByRole('tab', { name: 'Chat' }).getAttribute('aria-selected')).toBe('true')
+    expect(screen.getByRole('tab', { name: 'Tasks' }).getAttribute('aria-selected')).toBe('false')
+    expect(screen.getByRole('tab', { name: 'Activity' }).getAttribute('aria-selected')).toBe('false')
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Tasks' }))
+    expect(screen.getByTestId('tasks-view')).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Task queue' })).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Activity' }))
 
     expect(screen.getByRole('tab', { name: 'Activity' })).toBeTruthy()
     expect(screen.queryByText(/turns ·/)).toBeNull()
@@ -380,6 +392,54 @@ describe('tab switching in ConversationRoot', () => {
     fireEvent.click(screen.getByRole('tab', { name: 'Chat' }))
     expect(screen.getByTestId('chat-body')).toBeTruthy()
     expect(b.loadOlder).not.toHaveBeenCalled()
+  })
+
+  it('derives active progress and queue ETA from live work and completed request history', () => {
+    const base = historySnapshot(NODES, {
+      requests: [
+        {
+          startSeq: 10,
+          startedAt: 1_000,
+          completedAt: 11_000,
+          status: 'complete',
+          purpose: 'assistant',
+          turn: 1,
+          step: 1,
+        },
+        {
+          startSeq: 11,
+          startedAt: 12_000,
+          completedAt: null,
+          status: 'running',
+          purpose: 'assistant',
+          turn: 1,
+          step: 2,
+        },
+      ] as never,
+    })
+    const snapshot = {
+      ...base,
+      running: true,
+      partial: { turn: 1, step: 2, blocks: [] },
+      queue: [{
+        id: 'queued-1',
+        messageId: 'queued-1',
+        placement: 'queued',
+        content: [{ type: 'text', text: 'Run the verification suite' }],
+        preview: 'Run the verification suite',
+        text: 'Run the verification suite',
+      }],
+    } as never as ConversationSnapshot
+
+    const summary = deriveTaskSummary(snapshot, 16_000)
+
+    expect(summary.status).toBe('running')
+    expect(summary.phase).toBe('Generating response')
+    expect(summary.progress).toBe(48)
+    expect(summary.queue).toEqual([{ id: 'queued-1', title: 'Run the verification suite', position: 1 }])
+    expect(summary.estimateSource).toBe('history')
+    expect(summary.etaMs).toBe(15_000)
+    expect(summary.totalEtaMs).toBe(30_000)
   })
 
   it('labels the trajectory tab in the active locale', async () => {

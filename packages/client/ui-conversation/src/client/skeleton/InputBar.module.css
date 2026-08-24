@@ -159,14 +159,16 @@
   position: relative;
 }
 
-/* Decoration backdrop: same metrics as the textarea, transparent glyphs; only
-   the highlight backgrounds and the ghost hint show through the transparent
-   textarea background above it. */
+/* Decoration backdrop: same metrics as the textarea, but ordinary draft glyphs
+   stay transparent so the native textarea can paint the live text and caret
+   without waiting for the React mirror to catch up. Highlight ranges, chips,
+   and hints opt back into their own colors below. */
 .backdrop {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  color: var(--dsw-alias-label-primary);
+  z-index: 1;
+  color: transparent;
   pointer-events: none;
 }
 
@@ -213,7 +215,7 @@
   border: none;
   outline: none;
   background: transparent;
-  color: transparent;
+  color: var(--dsw-alias-label-primary);
   /* Business blue, not brand-primary: that token resolves to ink in this sheet. */
   caret-color: var(--dsw-alias-state-business-primary);
 }

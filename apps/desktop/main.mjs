@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain, Menu } from 'electron'
 import { existsSync } from 'node:fs'
 import { spawn } from 'node:child_process'
 import { createServer } from 'node:net'
@@ -13,6 +13,32 @@ const UPDATE_CHECK_INTERVAL_MS = 6 * 60 * 60 * 1_000
 let backend = null
 let mainWindow = null
 let quitting = false
+
+function windowFromEvent(event) {
+  const window = BrowserWindow.fromWebContents(event.sender)
+  return window !== null && !window.isDestroyed() ? window : null
+}
+
+function sendWindowState(window = mainWindow) {
+  if (window === null || window.isDestroyed()) return
+  window.webContents.send('neon-window:state', { maximized: window.isMaximized() })
+}
+
+/** Install the small, explicit IPC surface used by the integrated title bar. */
+function registerWindowControls() {
+  ipcMain.handle('neon-window:get-state', event => {
+    const window = windowFromEvent(event)
+    return { maximized: window?.isMaximized() ?? false }
+  })
+  ipcMain.on('neon-window:minimize', event => windowFromEvent(event)?.minimize())
+  ipcMain.on('neon-window:toggle-maximize', event => {
+    const window = windowFromEvent(event)
+    if (window === null) return
+    if (window.isMaximized()) window.unmaximize()
+    else window.maximize()
+  })
+  ipcMain.on('neon-window:close', event => windowFromEvent(event)?.close())
+}
 
 /** Reserve an unused loopback port for the embedded Web backend. */
 async function freePort() {
@@ -162,14 +188,23 @@ async function createMainWindow() {
     height: 920,
     minWidth: 980,
     minHeight: 680,
-    backgroundColor: '#141416',
-    icon: join(appAssetsRoot(), 'assets', 'deepseek-harness-icon.ico'),
+    title: 'NeonHarness',
+    backgroundColor: '#0b0e11',
+    frame: false,
+    autoHideMenuBar: true,
+    icon: join(appAssetsRoot(), 'assets', 'neon-harness-icon.ico'),
     webPreferences: {
+      preload: join(appAssetsRoot(), 'preload.mjs'),
       contextIsolation: true,
       nodeIntegration: false,
     },
   })
+  mainWindow.setMenuBarVisibility(false)
   mainWindow.on('closed', () => { mainWindow = null })
+  mainWindow.on('page-title-updated', event => event.preventDefault())
+  mainWindow.on('maximize', () => sendWindowState())
+  mainWindow.on('unmaximize', () => sendWindowState())
+  mainWindow.webContents.on('did-finish-load', () => sendWindowState())
   await mainWindow.loadURL(url)
   await setupAutoUpdater()
 }
@@ -184,6 +219,8 @@ if (!hasLock) {
     mainWindow.focus()
   })
   app.on('ready', () => {
+    Menu.setApplicationMenu(null)
+    registerWindowControls()
     return createMainWindow().catch(async error => {
       console.error('[dsh-desktop] startup failed', error instanceof Error ? error.stack : JSON.stringify(error))
       await dialog.showMessageBox({

@@ -12,6 +12,7 @@ import { useSyncExternalStore } from 'react'
 import type { ReactNode } from 'react'
 import type { KernelSignal, LoaderStatus } from './loader-status.ts'
 import css from './AppRoot.module.css'
+import { WindowShell } from './WindowChrome.tsx'
 
 /** AppRoot props: settled signal, fiber-state projection feed, boot failure report, deferred real-UI factory. */
 export interface AppRootProps {
@@ -32,29 +33,31 @@ export function AppRoot(props: AppRootProps) {
   const error = useSyncExternalStore(props.error.subscribe, props.error.getSnapshot)
   const failed = Object.entries(status).filter(([, s]) => s === 'failed')
 
-  if (settled) return <>{props.renderApp()}</>
+  if (settled) return <WindowShell>{props.renderApp()}</WindowShell>
 
   const loud = error !== undefined || failed.length > 0
 
   return (
-    <div className={css.boot}>
-      <div className={css.card}>
-        <div className={css.wordmark}>HARNESS</div>
-        {!loud
-          ? (
-            <>
-              <div className={css.spinner} />
-              <div className={css.hint}>Loading plugins…</div>
-            </>
-          )
-          : (
-            <div className={css.failed}>
-              <div className={css.failedTitle}>Failed to load plugins</div>
-              {failed.map(([id]) => <div key={id} className={css.failedItem}>{id}</div>)}
-              {error !== undefined && <div className={css.failedItem}>{error}</div>}
-            </div>
-          )}
+    <WindowShell>
+      <div className={css.boot}>
+        <div className={css.card}>
+          <div className={css.wordmark}>HARNESS</div>
+          {!loud
+            ? (
+              <>
+                <div className={css.spinner} />
+                <div className={css.hint}>Loading plugins…</div>
+              </>
+            )
+            : (
+              <div className={css.failed}>
+                <div className={css.failedTitle}>Failed to load plugins</div>
+                {failed.map(([id]) => <div key={id} className={css.failedItem}>{id}</div>)}
+                {error !== undefined && <div className={css.failedItem}>{error}</div>}
+              </div>
+            )}
+        </div>
       </div>
-    </div>
+    </WindowShell>
   )
 }

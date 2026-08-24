@@ -22,6 +22,7 @@ module.exports = {
   },
   files: [
     'main.mjs',
+    'preload.mjs',
     'package.json',
     'assets/**/*',
   ],
@@ -42,7 +43,7 @@ module.exports = {
   win: {
     compression: 'store',
     target: [{ target: 'nsis', arch: ['x64', 'arm64'] }],
-    icon: path.resolve(__dirname, 'assets/deepseek-harness-icon.ico'),
+    icon: path.resolve(__dirname, 'assets/neon-harness-icon.ico'),
     ...(signingThumbprint
       ? { signtoolOptions: { certificateSha1: signingThumbprint } }
       : {}),

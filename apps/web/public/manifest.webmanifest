@@ -1,15 +1,15 @@
 {
-  "id": "/",
-  "name": "DeepSeek Harness",
-  "short_name": "DSH",
+  "id": "/neonharness",
+  "name": "NeonHarness",
+  "short_name": "NeonHarness",
   "start_url": "/",
   "scope": "/",
   "display": "fullscreen",
   "icons": [
     {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/neon-harness-mark.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any"
     }
   ]

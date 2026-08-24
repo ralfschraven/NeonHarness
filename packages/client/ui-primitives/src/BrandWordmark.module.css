@@ -1,0 +1,35 @@
+.root {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  height: var(--neon-brand-mark-size);
+  min-width: 0;
+  color: var(--neon-white, #e6e9ee);
+  white-space: nowrap;
+}
+
+.mark {
+  display: block;
+  flex: none;
+  width: var(--neon-brand-mark-size);
+  height: var(--neon-brand-mark-size);
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 0 16px var(--neon-glow, rgba(198, 255, 0, 0.2));
+}
+
+.wordmark {
+  overflow: hidden;
+  color: currentColor;
+  font-family: 'Neon Display', 'Saira Semi Condensed', 'Arial Narrow', sans-serif;
+  font-size: var(--neon-brand-type-size);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  text-overflow: ellipsis;
+}
+
+.neon {
+  color: var(--neon-lime, #c6ff00);
+}
