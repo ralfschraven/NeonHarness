@@ -23,4 +23,6 @@ Browser layout check: the workbench surface now spans the full 1280px viewport (
 
 Browser typing check: native textarea text and caret stayed aligned through wrapped and capped drafts; the corrected layer keeps the mirror for highlights, chips, and hints only.
 
+Browser tab check: opening existing conversations selected Chat by default; Activity remained available as a manual tab switch.
+
 Final result: passed

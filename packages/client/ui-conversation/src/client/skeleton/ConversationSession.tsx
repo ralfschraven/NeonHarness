@@ -22,7 +22,7 @@ interface Breadcrumb {
 
 // Keep the dialog focused on durable responses; live operational detail is
 // surfaced in the Activity view and remains available alongside Chat.
-const DEFAULT_VIEW_ID = 'trajectory'
+const DEFAULT_VIEW_ID = 'chat'
 
 /** Resolve by id and keep stale persisted selections on the stable Chat fallback. */
 function resolveActiveView(tabs: readonly ViewTab[], selectedId: string | null): ViewTab | undefined {

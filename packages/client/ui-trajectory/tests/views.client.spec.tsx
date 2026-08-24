@@ -358,11 +358,15 @@ describe('plugin registration', () => {
 })
 
 describe('tab switching in ConversationRoot', () => {
-  it('renders two tabs, defaults to Activity, and switches to Chat', async () => {
+  it('renders two tabs, defaults to Chat, and switches to Activity', async () => {
     const b = await bench()
     const view = mount(b.slots)
-    expect(screen.queryByTestId('chat-body')).toBeNull()
+    expect(screen.queryByTestId('chat-body')).toBeTruthy()
     expect(screen.getAllByRole('tab').map(t => t.textContent)).toEqual(['Chat', 'Activity'])
+
+    expect(screen.getByRole('tab', { name: 'Chat' }).getAttribute('aria-selected')).toBe('true')
+    expect(screen.getByRole('tab', { name: 'Activity' }).getAttribute('aria-selected')).toBe('false')
+    fireEvent.click(screen.getByRole('tab', { name: 'Activity' }))
 
     expect(screen.getByRole('tab', { name: 'Activity' })).toBeTruthy()
     expect(screen.queryByText(/turns ·/)).toBeNull()
