@@ -118,7 +118,15 @@ async function copyExternal(source, destination) {
   await mkdir(destination, { recursive: true })
   await cp(source, destination, {
     recursive: true,
-    filter: sourcePath => !relative(source, sourcePath).split(/[\\/]/).includes('node_modules'),
+    filter: sourcePath => {
+      const relativePath = relative(source, sourcePath)
+      if (relativePath.split(/[\\/]/).includes('node_modules')) return false
+      // Published external packages often carry large declarations and source
+      // maps next to their runtime files. They are not loaded by Node and make
+      // the NSIS archive much slower to assemble.
+      if (/\.(?:ts|tsx|mts|cts|map)$/.test(relativePath)) return false
+      return true
+    },
   })
 }
 
@@ -128,23 +136,40 @@ async function copyExternal(source, destination) {
  * dsh-plugin-focus 1.0.1 marks its explicit output object with
  * `required: true`. In the value-schema DSL requiredness belongs to object
  * properties, so that root marker prevents the profile from booting. The
- * marker has no meaning at the root and can safely be omitted. This guard is
- * intentionally scoped to the third-party package and becomes a no-op when
- * a future plugin release ships the corrected schema.
+ * marker has no meaning at the root and can safely be omitted. Its hand-written
+ * client face also uses a module id that does not match the loader row. These
+ * guards are intentionally scoped to the third-party package and become
+ * no-ops when a future plugin release ships the corrected files.
  */
 async function applyExternalCompatibility(name, destination) {
   if (name !== 'dsh-plugin-focus') return
-  const entry = join(destination, 'lib', 'index.js')
-  let source
+  const indexEntry = join(destination, 'lib', 'index.js')
+  const clientEntry = join(destination, 'lib', 'client.js')
+  let appliedSchemaFix = false
+  let appliedClientFix = false
   try {
-    source = await readFile(entry, 'utf8')
+    const source = await readFile(indexEntry, 'utf8')
+    const legacy = '        type: "object",\n        additionalProperties: false,\n        required: true,\n        properties:'
+    if (source.includes(legacy)) {
+      await writeFile(indexEntry, source.replace(legacy, legacy.replace('        required: true,\n', '')))
+      appliedSchemaFix = true
+    }
   } catch {
-    return
+    // The package may already be corrected or may not expose the Node entry.
   }
-  const legacy = '        type: "object",\n        additionalProperties: false,\n        required: true,\n        properties:'
-  if (!source.includes(legacy)) return
-  await writeFile(entry, source.replace(legacy, legacy.replace('        required: true,\n', '')))
-  console.log('Applied dsh-plugin-focus schema compatibility fix')
+  try {
+    const source = await readFile(clientEntry, 'utf8')
+    const legacy = 'id: "dsh-plugin-focus/client"'
+    if (source.includes(legacy)) {
+      await writeFile(clientEntry, source.replace(legacy, 'id: "dsh-plugin-focus"'))
+      appliedClientFix = true
+    }
+  } catch {
+    // The package may not expose a browser entry.
+  }
+  if (appliedSchemaFix || appliedClientFix) {
+    console.log('Applied dsh-plugin-focus compatibility fix')
+  }
 }
 
 const workspace = new Map()

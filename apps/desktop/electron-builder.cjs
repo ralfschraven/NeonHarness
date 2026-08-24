@@ -22,6 +22,7 @@ module.exports = {
   },
   files: [
     'main.mjs',
+    'preload.mjs',
     'package.json',
     'assets/**/*',
   ],
